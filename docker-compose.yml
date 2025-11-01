@@ -1,0 +1,76 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: finderhub_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    build: ./backend
+    container_name: finderhub_backend
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      JWT_SECRET: supersecretjwt
+      JWT_EXPIRES_IN: 15m
+      BCRYPT_ROUNDS: 10
+      CORS_ORIGINS: http://localhost:3000
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: example
+      MYSQL_DATABASE: finderhub
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  mysql:
+    image: mysql:8.0
+    container_name: finderhub_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: finderhub
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: finderhub_redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+  redis_data:
