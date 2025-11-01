@@ -13,8 +13,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-import { Button } from '@/components/ui/button';
-import { clearAuthToken } from '@/lib/token';
+import { LogoutButton } from './logout-button';
 
 interface NavItem {
   href: string;
@@ -44,11 +43,6 @@ const NAV_ITEMS: NavItem[] = [
 
 export function BackSidebar() {
   const pathname = usePathname();
-
-  const handleLogout = () => {
-    clearAuthToken();
-    window.location.href = '/login';
-  };
 
   return (
     <Sidebar className="border-r border-border">
@@ -81,10 +75,7 @@ export function BackSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="px-5 py-6">
-        <Button type="button" variant="outline" size="sm" className="w-full" onClick={handleLogout}>
-          <ArrowLeftOnRectangleIcon className="mr-2 h-4 w-4" />
-          ออกจากระบบ
-        </Button>
+        <LogoutButton />
       </SidebarFooter>
     </Sidebar>
   );

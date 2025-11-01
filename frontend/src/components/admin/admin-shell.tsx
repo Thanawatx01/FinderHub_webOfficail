@@ -12,7 +12,6 @@ import apiClient from '@/lib/api-client';
 import { clearAuthToken } from '@/lib/token';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Badge } from '@/components/ui/badge';
-import { LogoutButton } from '@/components/logout-button';
 import { BackSidebar } from '@/components/back-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import {
@@ -147,7 +146,6 @@ export function AdminShell({ children }: AdminShellProps) {
                   </Badge>
                 </div>
                 <ModeToggle />
-                <LogoutButton />
               </div>
             </div>
           </header>
