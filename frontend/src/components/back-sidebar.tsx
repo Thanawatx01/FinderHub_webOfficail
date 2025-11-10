@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ChartBarIcon, UserGroupIcon, Cog6ToothIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { ChartBarIcon, UserGroupIcon, Cog6ToothIcon, HomeIcon } from '@heroicons/react/24/outline';
 
 import {
   Sidebar,
@@ -23,6 +24,12 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
+  {
+    href: '/',
+    label: 'กลับสู่หน้าหลัก',
+    icon: HomeIcon,
+    exact: true,
+  },
   {
     href: '/admin',
     label: 'แดชบอร์ด',
@@ -48,7 +55,9 @@ export function BackSidebar() {
     <Sidebar className="border-r border-border">
       <SidebarHeader className="px-5 py-6">
         <div className="space-y-1">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">FinderHub</p>
+          <Link href="/" className="inline-block">
+            <Image src="/FinderHub.svg" alt="FinderHub" width={180} height={40} />
+          </Link>
           <p className="text-lg font-semibold">Admin Panel</p>
         </div>
       </SidebarHeader>
