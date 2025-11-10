@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChartBarIcon, UserGroupIcon, Cog6ToothIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { ChartBarIcon, UserGroupIcon, Cog6ToothIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 import {
   Sidebar,
@@ -15,19 +15,24 @@ import {
 
 import { LogoutButton } from './logout-button';
 
-interface NavItem {
+export interface AdminNavItem {
   href: string;
   label: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   exact?: boolean;
 }
 
-const NAV_ITEMS: NavItem[] = [
+export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   {
     href: '/admin',
     label: 'แดชบอร์ด',
     icon: ChartBarIcon,
     exact: true,
+  },
+  {
+    href: '/admin/losts',
+    label: 'รายการสูญหาย',
+    icon: MagnifyingGlassIcon,
   },
   {
     href: '/admin/users',
@@ -40,6 +45,12 @@ const NAV_ITEMS: NavItem[] = [
     icon: Cog6ToothIcon,
   },
 ];
+
+export const ADMIN_NAV_LABELS = ADMIN_NAV_ITEMS.reduce<Record<string, string>>((labels, item) => {
+  const key = item.href.replace(/^\//, '');
+  labels[key] = item.label;
+  return labels;
+}, {});
 
 export function BackSidebar() {
   const pathname = usePathname();
@@ -56,7 +67,7 @@ export function BackSidebar() {
       <SidebarContent>
         <SidebarGroup className="px-3 py-2">
           <SidebarMenu>
-            {NAV_ITEMS.map((item) => {
+            {ADMIN_NAV_ITEMS.map((item) => {
               const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
               const Icon = item.icon;
               return (

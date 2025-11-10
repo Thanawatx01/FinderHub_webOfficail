@@ -12,7 +12,7 @@ import apiClient from '@/lib/api-client';
 import { clearAuthToken } from '@/lib/token';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Badge } from '@/components/ui/badge';
-import { BackSidebar } from '@/components/back-sidebar';
+import { ADMIN_NAV_LABELS, BackSidebar } from '@/components/back-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Breadcrumb,
@@ -71,13 +71,16 @@ export function AdminShell({ children }: AdminShellProps) {
   }, [router]);
 
   const breadcrumbs = useMemo(() => {
-    const segments = pathname.split('/').filter(Boolean);
+    const segments = pathname.replace(/^\//, '').split('/').filter(Boolean);
     const adminIndex = segments.indexOf('admin');
     const relevant = adminIndex >= 0 ? segments.slice(adminIndex) : segments;
 
     const items = relevant.map((segment, index) => {
-      const href = '/' + relevant.slice(0, index + 1).join('/');
-      const label = segment === 'admin' ? 'แดชบอร์ด' : segment.replace(/-/g, ' ');
+      const fullSegment = relevant.slice(0, index + 1).join('/');
+      const href = '/' + fullSegment;
+      const label =
+        ADMIN_NAV_LABELS[fullSegment] ??
+        (segment === 'admin' ? 'แดชบอร์ด' : segment.replace(/-/g, ' '));
       return { label, href, isLast: index === relevant.length - 1 };
     });
 

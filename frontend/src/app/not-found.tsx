@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { HouseIcon, ArrowLeftIcon } from 'lucide-react';
+import { HouseIcon, ArrowLeftIcon, ShieldCheckIcon } from 'lucide-react';
+
 
 import { Button } from '@/components/ui/button';
 
@@ -12,6 +13,9 @@ export default function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12 text-center text-foreground">
       <div className="space-y-6">
+        <div className='flex justify-center'>
+          <ShieldCheckIcon className="h-60 w-60" />
+        </div>
         <p className="text-sm font-medium text-muted-foreground">404 | ไม่พบหน้าที่ค้นหา</p>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">ไม่พบหน้าเพจนี้</h1>
         <p className="max-w-md text-sm text-muted-foreground">

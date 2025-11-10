@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./src/authRoutes');
 const { connectRedis, redisClient } = require('./src/redisClient');
 const { ensureTables, pool } = require('./src/db');
+const lostItemRoutes = require('./src/lostItemRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.use('/auth', authRoutes);
+app.use('/lost-items', lostItemRoutes);
 
 const port = Number(process.env.PORT || 4000);
 

@@ -42,6 +42,26 @@ async function ensureTables() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `
 
+  const createLostItemTable = `
+    CREATE TABLE IF NOT EXISTS lost_item (
+      id INT NOT NULL AUTO_INCREMENT,
+      title VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL,
+      status ENUM('lost', 'found', 'returned') NOT NULL DEFAULT 'lost',
+      location VARCHAR(255) NULL,
+      image_url VARCHAR(500) NULL,
+      contact_name VARCHAR(255) NULL,
+      contact_phone VARCHAR(50) NULL,
+      tags TEXT NULL,
+      reported_at DATETIME NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      created_by INT NULL,
+      updated_by INT NULL,
+      PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `;
+
   const createSimpleUserData = `
     INSERT INTO user (email, password_hash, name, role)
     SELECT 'admin@1', '$2a$12$NaZuypFd3AmadVWpW8gsD.DoCco./dHkx/pTzQYU65EAh70ppiJfa', 'Admin', 'admin'
@@ -52,6 +72,7 @@ async function ensureTables() {
   try {
     await connection.query(createUserTable);
     await connection.query(createItemTable);
+    await connection.query(createLostItemTable);
     await connection.query(createSimpleUserData);
   } finally {
     connection.release();
